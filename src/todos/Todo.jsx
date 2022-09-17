@@ -4,11 +4,11 @@ import "../style/style.css";
 import { useState } from "react";
 import url from '../constant/api'
 import { useEffect } from "react";
-// const job = {
-//   id: '',
-//   content: '',
-//   status: ''
-// }
+
+const endPointApi = {
+  getAdd: '/tasks',
+  addTask: '/tasks'
+}
 
 function Todo(props) {
   const [list, setList] = useState([]);
@@ -16,14 +16,21 @@ function Todo(props) {
 
   useEffect(() => {
     fetchData()
-      .then(data => setList(data))
   }, [])
   
   const fetchData = async () => {
     const data = await fetch(url + '/tasks', {
       method: "GET"
     }).then(data => data.json())
-    return data
+    setList(data)
+  }
+
+  const addTask = async (task) => {
+    await fetch(url + endPointApi.addTask, {
+      method: "POST",
+      body: JSON.stringify({content: task, status: 'todo'})
+    })
+    fetchData()
   }
 
   const handleChange = (e) => {
@@ -32,18 +39,9 @@ function Todo(props) {
   };
 
   const handleClickAdd = () => {
-    const hasItem = list[list.length - 1];
-    const lastItem = hasItem ? list[list.length - 1] : { id: 0 };
-
-    const job = {
-      id: lastItem.id + 1,
-      content: content
-    };
-
-    setList([...list, job])
-    setContent('')
+    addTask(content)
   };
-  console.log('render')
+
   return (
     <Fragment>
       <div className="loader">
