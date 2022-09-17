@@ -1,7 +1,16 @@
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import "../style/style.css";
+import { useState } from "react";
+// const job = {
+//   id: '',
+//   content: '',
+//   status: ''
+// }
 function Todo(props) {
+  const [list, setList] = useState([
+    
+  ]);
   return (
     <Fragment>
       <div className="loader">
@@ -43,18 +52,22 @@ function Todo(props) {
             ></div>
             <div className="card__todo">
               <ul className="todo" id="todo">
-                <li>
-                  <span>new task</span>
-                  <div class="buttons">
-                    <button class="remove">
-                      <i class="fa fa-trash-alt"></i>
-                    </button>
-                    <button class="complete">
-                      <i class="far fa-check-circle"></i>
-                      <i class="fas fa-check-circle"></i>
-                    </button>
-                  </div>
-                </li>
+                {list.map((item) => {
+                  return (
+                    <li>
+                      <span>{item.content}</span>
+                      <div class="buttons">
+                        <button class="remove">
+                          <i class="fa fa-trash-alt"></i>
+                        </button>
+                        <button class="complete">
+                          <i class="far fa-check-circle"></i>
+                          <i class="fas fa-check-circle"></i>
+                        </button>
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
               <ul className="todo" id="completed"></ul>
             </div>
