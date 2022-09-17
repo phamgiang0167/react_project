@@ -2,15 +2,48 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import "../style/style.css";
 import { useState } from "react";
+import url from '../constant/api'
+import { useEffect } from "react";
 // const job = {
 //   id: '',
 //   content: '',
 //   status: ''
 // }
+
 function Todo(props) {
-  const [list, setList] = useState([
-    
-  ]);
+  const [list, setList] = useState([]);
+  const [content, setContent] = useState('');
+
+  useEffect(() => {
+    fetchData()
+      .then(data => setList(data))
+  }, [])
+  
+  const fetchData = async () => {
+    const data = await fetch(url + '/tasks', {
+      method: "GET"
+    }).then(data => data.json())
+    return data
+  }
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setContent(value);
+  };
+
+  const handleClickAdd = () => {
+    const hasItem = list[list.length - 1];
+    const lastItem = hasItem ? list[list.length - 1] : { id: 0 };
+
+    const job = {
+      id: lastItem.id + 1,
+      content: content
+    };
+
+    setList([...list, job])
+    setContent('')
+  };
+  console.log('render')
   return (
     <Fragment>
       <div className="loader">
@@ -40,8 +73,10 @@ function Todo(props) {
                 id="newTask"
                 type="text"
                 placeholder="Enter an activity..."
+                value={content}
+                onChange={handleChange}
               />
-              <button id="addItem">
+              <button id="addItem" onClick={handleClickAdd}>
                 <i className="fa fa-plus"></i>
               </button>
             </div>
@@ -54,15 +89,15 @@ function Todo(props) {
               <ul className="todo" id="todo">
                 {list.map((item) => {
                   return (
-                    <li>
+                    <li key={item.id}>
                       <span>{item.content}</span>
-                      <div class="buttons">
-                        <button class="remove">
-                          <i class="fa fa-trash-alt"></i>
+                      <div className="buttons">
+                        <button className="remove">
+                          <i className="fa fa-trash-alt"></i>
                         </button>
-                        <button class="complete">
-                          <i class="far fa-check-circle"></i>
-                          <i class="fas fa-check-circle"></i>
+                        <button className="complete">
+                          <i className="far fa-check-circle"></i>
+                          <i className="fas fa-check-circle"></i>
                         </button>
                       </div>
                     </li>
