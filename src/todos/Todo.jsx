@@ -5,41 +5,31 @@ import { useState } from "react";
 import url from '../constant/api'
 import { useEffect } from "react";
 
-const endPointApi = {
-  getAdd: '/tasks',
-  addTask: '/tasks'
-}
+// const task = {
+//   id
+//   nametask
+//   status
+// }
 
 function Todo(props) {
   const [list, setList] = useState([]);
   const [content, setContent] = useState('');
 
   useEffect(() => {
-    fetchData()
+
   }, [])
   
-  const fetchData = async () => {
-    const data = await fetch(url + '/tasks', {
-      method: "GET"
-    }).then(data => data.json())
-    setList(data)
-  }
 
   const addTask = async (task) => {
-    await fetch(url + endPointApi.addTask, {
-      method: "POST",
-      body: JSON.stringify({content: task, status: 'todo'})
-    })
-    fetchData()
+    
   }
 
   const handleChange = (e) => {
-    const value = e.target.value;
-    setContent(value);
+
   };
 
   const handleClickAdd = () => {
-    addTask(content)
+
   };
 
   return (
