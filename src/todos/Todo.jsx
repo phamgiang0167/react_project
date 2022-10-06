@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import "../style/style.css";
 import { useState } from "react";
-import url from '../constant/api'
+import url from "../constant/api";
 import { useEffect } from "react";
 
 // const task = {
@@ -13,32 +13,41 @@ import { useEffect } from "react";
 
 function Todo(props) {
   const [list, setList] = useState([]);
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState("");
 
-  useEffect(() => {
-
-  }, [])
-  
-
+  useEffect(() => {}, []);
 
   const handleChange = (e) => {
-    const value = e.target.value
-    setContent(value)
+    const value = e.target.value;
+    setContent(value);
   };
 
   const handleClickAdd = () => {
-    setList(
-      [...list, {
+    setList([
+      ...list,
+      {
         id: list[list.length - 1] ? list[list.length - 1].id - 1 : 1,
         content: content,
-        status: 'todo'
-      }]
-    )
-    setContent('')
+        status: "todo",
+      },
+    ]);
+    setContent("");
   };
 
   const handleDelete = (id) => {
-    setList(list.filter( item => item.id !== id))
+    setList(list.filter((item) => item.id !== id));
+  };
+
+  const handleChangeStatus = (id) => {
+    const newList = [...list].map(item => {
+      return item.id === id ? 
+      {
+        ...item,
+        status: 'complete'
+      } :
+      item
+    })
+    setList(newList)
   }
 
   return (
@@ -73,7 +82,7 @@ function Todo(props) {
                 value={content}
                 onChange={handleChange}
               />
-              <button id="addItem" status='todo' onClick={handleClickAdd}>
+              <button id="addItem" status="todo" onClick={handleClickAdd}>
                 <i className="fa fa-plus"></i>
               </button>
             </div>
@@ -85,12 +94,36 @@ function Todo(props) {
             <div className="card__todo">
               <ul className="todo" id="todo">
                 {list.map((item) => {
-                  return (
+                  return item.status === "todo" && (
                     <li key={item.id}>
                       <span>{item.content}</span>
                       <div className="buttons">
-                        <button className="remove" onClick={() => handleDelete(item.id) }>
-                          <i className="fa fa-trash-alt"></i> 
+                        <button
+                          className="remove"
+                          onClick={() => handleDelete(item.id)}
+                        >
+                          <i className="fa fa-trash-alt"></i>
+                        </button>
+                        <button className="complete" onClick={() => handleChangeStatus(item.id)}>
+                          <i className="far fa-check-circle"></i>
+                          <i className="fas fa-check-circle"></i>
+                        </button>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+              <ul className="todo" id="completed">
+                {list.map((item) => {
+                  return item.status === "complete" &&(
+                    <li key={item.id}>
+                      <span>{item.content}</span>
+                      <div className="buttons">
+                        <button
+                          className="remove"
+                          onClick={() => handleDelete(item.id)}
+                        >
+                          <i className="fa fa-trash-alt"></i>
                         </button>
                         <button className="complete">
                           <i className="far fa-check-circle"></i>
@@ -101,7 +134,6 @@ function Todo(props) {
                   );
                 })}
               </ul>
-              <ul className="todo" id="completed"></ul>
             </div>
           </div>
         </div>
