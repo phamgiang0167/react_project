@@ -20,17 +20,26 @@ function Todo(props) {
   }, [])
   
 
-  const addTask = async (task) => {
-    
-  }
 
   const handleChange = (e) => {
-
+    const value = e.target.value
+    setContent(value)
   };
 
   const handleClickAdd = () => {
-
+    setList(
+      [...list, {
+        id: list[list.length - 1] ? list[list.length - 1].id - 1 : 1,
+        content: content,
+        status: 'todo'
+      }]
+    )
+    setContent('')
   };
+
+  const handleDelete = (id) => {
+    setList(list.filter( item => item.id !== id))
+  }
 
   return (
     <Fragment>
@@ -64,7 +73,7 @@ function Todo(props) {
                 value={content}
                 onChange={handleChange}
               />
-              <button id="addItem" onClick={handleClickAdd}>
+              <button id="addItem" status='todo' onClick={handleClickAdd}>
                 <i className="fa fa-plus"></i>
               </button>
             </div>
@@ -80,8 +89,8 @@ function Todo(props) {
                     <li key={item.id}>
                       <span>{item.content}</span>
                       <div className="buttons">
-                        <button className="remove">
-                          <i className="fa fa-trash-alt"></i>
+                        <button className="remove" onClick={() => handleDelete(item.id) }>
+                          <i className="fa fa-trash-alt"></i> 
                         </button>
                         <button className="complete">
                           <i className="far fa-check-circle"></i>
