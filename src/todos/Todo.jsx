@@ -40,10 +40,18 @@ function Todo(props) {
 
   const handleChangeStatus = (id) => {
     const newList = [...list].map(item => {
+      // if(item.id === id) {
+      //   if(item.status === 'todo') {
+      //     item.status = 'complete'
+      //   } else if(item.status === 'complete') {
+      //     item.status = 'todo'
+      //   }
+      // }
+      // return item;
       return item.id === id ? 
       {
         ...item,
-        status: 'complete'
+        status: item.status === 'todo' ? 'complete' : 'todo'
       } :
       item
     })
@@ -125,7 +133,7 @@ function Todo(props) {
                         >
                           <i className="fa fa-trash-alt"></i>
                         </button>
-                        <button className="complete">
+                        <button className="complete" onClick={() => handleChangeStatus(item.id)}>
                           <i className="far fa-check-circle"></i>
                           <i className="fas fa-check-circle"></i>
                         </button>
