@@ -4,7 +4,7 @@ import "../style/style.css";
 import { useState } from "react";
 import url from "../constant/api";
 import { useEffect } from "react";
-
+import Input from './Input'
 // const task = {
 //   id
 //   nametask
@@ -82,18 +82,7 @@ function Todo(props) {
               <h2>My Tasks</h2>
               <p>September 9,2020</p>
             </div>
-            <div className="card__add">
-              <input
-                id="newTask"
-                type="text"
-                placeholder="Enter an activity..."
-                value={content}
-                onChange={handleChange}
-              />
-              <button id="addItem" status="todo" onClick={handleClickAdd}>
-                <i className="fa fa-plus"></i>
-              </button>
-            </div>
+            <Input content={content} handleChange={handleChange} handleClickAdd={handleClickAdd}/>
             <div
               id="notiInput"
               className="alert-danger"
