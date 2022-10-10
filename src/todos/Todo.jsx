@@ -5,6 +5,8 @@ import { useState } from "react";
 import url from "../constant/api";
 import { useEffect } from "react";
 import Input from './Input'
+import ListTodo from "./ListTodo";
+import ListComplete from "./ListComplete";
 // const task = {
 //   id
 //   nametask
@@ -13,16 +15,11 @@ import Input from './Input'
 
 function Todo(props) {
   const [list, setList] = useState([]);
-  const [content, setContent] = useState("");
 
   useEffect(() => {}, []);
 
-  const handleChange = (e) => {
-    const value = e.target.value;
-    setContent(value);
-  };
 
-  const handleClickAdd = () => {
+  const handleClickAdd = (content) => {
     setList([
       ...list,
       {
@@ -31,7 +28,6 @@ function Todo(props) {
         status: "todo",
       },
     ]);
-    setContent("");
   };
 
   const handleDelete = (id) => {
@@ -82,55 +78,15 @@ function Todo(props) {
               <h2>My Tasks</h2>
               <p>September 9,2020</p>
             </div>
-            <Input content={content} handleChange={handleChange} handleClickAdd={handleClickAdd}/>
+            <Input handleClickAdd={handleClickAdd}/>
             <div
               id="notiInput"
               className="alert-danger"
               style={{ display: "none" }}
             ></div>
             <div className="card__todo">
-              <ul className="todo" id="todo">
-                {list.map((item) => {
-                  return item.status === "todo" && (
-                    <li key={item.id}>
-                      <span>{item.content}</span>
-                      <div className="buttons">
-                        <button
-                          className="remove"
-                          onClick={() => handleDelete(item.id)}
-                        >
-                          <i className="fa fa-trash-alt"></i>
-                        </button>
-                        <button className="complete" onClick={() => handleChangeStatus(item.id)}>
-                          <i className="far fa-check-circle"></i>
-                          <i className="fas fa-check-circle"></i>
-                        </button>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-              <ul className="todo" id="completed">
-                {list.map((item) => {
-                  return item.status === "complete" &&(
-                    <li key={item.id}>
-                      <span>{item.content}</span>
-                      <div className="buttons">
-                        <button
-                          className="remove"
-                          onClick={() => handleDelete(item.id)}
-                        >
-                          <i className="fa fa-trash-alt"></i>
-                        </button>
-                        <button className="complete" onClick={() => handleChangeStatus(item.id)}>
-                          <i className="far fa-check-circle"></i>
-                          <i className="fas fa-check-circle"></i>
-                        </button>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
+              <ListTodo list={list} handleDelete={handleDelete} handleChangeStatus={handleChangeStatus}/>
+              <ListComplete list={list} handleDelete={handleDelete} handleChangeStatus={handleChangeStatus}/>
             </div>
           </div>
         </div>
@@ -142,3 +98,10 @@ function Todo(props) {
 Todo.propTypes = {};
 
 export default Todo;
+
+// Refactor listTodo va listComplete sao cho tai su dung dc
+
+/**
+ * - Lọc list trước t=khi truyền
+ * - Tách các sự kiện delete và changeStatus vào component con
+ */

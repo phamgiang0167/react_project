@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function Input(props) {
-  const { content, handleChange, handleClickAdd } = props //destructuring
+  const [content, setContent] = useState("");
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setContent(value);
+  };
+  const { handleClickAdd } = props //destructuring
+
+  const hanldeClickAddLocal = () => {
+    handleClickAdd(content)
+  }
+  
   return (
     <div className="card__add">
       <input
@@ -11,7 +21,7 @@ export default function Input(props) {
         value={content}
         onChange={handleChange}
       />
-      <button id="addItem" status="todo" onClick={handleClickAdd}>
+      <button id="addItem" status="todo" onClick={hanldeClickAddLocal}>
         <i className="fa fa-plus"></i>
       </button>
     </div>
